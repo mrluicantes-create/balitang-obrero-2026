@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fil">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e35">
+  <meta name="description" content="Basahin ang Balitang Obrero 2026. Interactive digital edition with 20 numbered pages, an uncut center spread, zoom, and PDF download.">
+  <title>Balitang Obrero 2026 · Digital Edition</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="reader.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="Balitang Obrero home"><span class="brand-mark" aria-hidden="true">BO<span>26</span></span><span><strong>Balitang Obrero</strong><small>THE 2026 DIGITAL EDITION</small></span></a>
+    <a class="pdf-link" href="Balitang-Obrero-2026.pdf" target="_blank" rel="noopener" download><span aria-hidden="true">↓</span> <span>Download PDF</span></a>
+  </header>
+  <main id="reader">
+    <div class="edition-line"><span><i aria-hidden="true"></i> BALITANG OBRERO <b>2026</b></span><span>20 PAGES <span class="edition-extra"> · ONE COMPLETE EDITION</span></span></div>
+    <section class="reader-shell" aria-label="Interactive newspaper reader">
+      <div class="reader-toolbar">
+        <button id="contentsButton" class="text-button" aria-expanded="false" aria-controls="contents"><span aria-hidden="true">▦</span> Pages</button>
+        <span id="sectionTitle">FRONT PAGE</span>
+        <div class="view-tools"><button id="zoomOut" aria-label="Zoom out" title="Zoom out">−</button><button id="zoomReset" aria-label="Reset zoom" title="Reset zoom">100%</button><button id="zoomIn" aria-label="Zoom in" title="Zoom in">+</button><span class="divider"></span><button id="fullscreen" aria-label="Enter fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg></button></div>
+      </div>
+      <div class="workspace">
+        <button id="prevSide" class="side-arrow previous" aria-label="Previous pages">‹</button>
+        <div id="viewport" tabindex="0" aria-label="Newspaper pages. Use left and right arrow keys to turn pages.">
+          <div id="canvas"><div id="book" aria-busy="true"></div></div>
+          <p id="loadError" role="alert" hidden>A page could not load. Check your connection and <button id="retry">try again</button>.</p>
+        </div>
+        <button id="nextSide" class="side-arrow next" aria-label="Next pages">›</button>
+        <aside id="contents" aria-label="Choose a page" hidden><div class="contents-heading"><strong>Explore the edition</strong><button id="closeContents" aria-label="Close page list">×</button></div><div id="pageGrid"></div></aside>
+      </div>
+      <div class="bottom-toolbar"><button id="first" title="First page" aria-label="First page">|‹</button><button id="prev" aria-label="Previous pages">‹</button><label class="page-picker"><span class="sr-only">Go to page</span><select id="pageSelect" aria-label="Go to page"></select><span class="page-total">/ 20</span></label><button id="next" aria-label="Next pages">›</button><button id="last" title="Last page" aria-label="Last page">›|</button><span id="position" class="sr-only" aria-live="polite"></span></div>
+      <div class="progress-track" aria-hidden="true"><div id="progress"></div></div>
+    </section>
+    <div class="reading-note"><span><span class="desktop-note">← → &nbsp; Turn pages</span><span class="mobile-note">Swipe to turn pages</span><span class="note-dot">·</span> Zoom in to read every detail</span><button id="centerLink">View center spread <span aria-hidden="true">↗</span></button></div>
+  </main>
+  <footer><span>BALITANG OBRERO <b>2026</b></span><span>Read. Reflect. Stay informed.</span></footer>
+</body>
+</html>

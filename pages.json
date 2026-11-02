@@ -1,0 +1,154 @@
+[
+  {
+    "number": "1",
+    "title": "FRONT PAGE",
+    "image": "assets/page-1.webp",
+    "thumbnail": "assets/thumb-1.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "2",
+    "title": "BALITA",
+    "image": "assets/page-2.webp",
+    "thumbnail": "assets/thumb-2.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "3",
+    "title": "BALITA",
+    "image": "assets/page-3.webp",
+    "thumbnail": "assets/thumb-3.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "4",
+    "title": "BALITA",
+    "image": "assets/page-4.webp",
+    "thumbnail": "assets/thumb-4.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "5",
+    "title": "BALITA",
+    "image": "assets/page-5.webp",
+    "thumbnail": "assets/thumb-5.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "6",
+    "title": "OPINYON",
+    "image": "assets/page-6.webp",
+    "thumbnail": "assets/thumb-6.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "7",
+    "title": "OPINYON",
+    "image": "assets/page-7.webp",
+    "thumbnail": "assets/thumb-7.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "8",
+    "title": "OPINYON",
+    "image": "assets/page-8.webp",
+    "thumbnail": "assets/thumb-8.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "9",
+    "title": "OPINYON",
+    "image": "assets/page-9.webp",
+    "thumbnail": "assets/thumb-9.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "10-11",
+    "title": "LATHALAIN",
+    "image": "assets/page-10-11.webp",
+    "thumbnail": "assets/thumb-10-11.webp",
+    "width": 5400,
+    "height": 3600
+  },
+  {
+    "number": "12",
+    "title": "LATHALAIN",
+    "image": "assets/page-12.webp",
+    "thumbnail": "assets/thumb-12.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "13",
+    "title": "LATHALAIN",
+    "image": "assets/page-13.webp",
+    "thumbnail": "assets/thumb-13.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "14",
+    "title": "AGHAM",
+    "image": "assets/page-14.webp",
+    "thumbnail": "assets/thumb-14.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "15",
+    "title": "AGHAM",
+    "image": "assets/page-15.webp",
+    "thumbnail": "assets/thumb-15.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "16",
+    "title": "AGHAM",
+    "image": "assets/page-16.webp",
+    "thumbnail": "assets/thumb-16.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "17",
+    "title": "AGHAM",
+    "image": "assets/page-17.webp",
+    "thumbnail": "assets/thumb-17.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "18",
+    "title": "ISPORTS",
+    "image": "assets/page-18.webp",
+    "thumbnail": "assets/thumb-18.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "19",
+    "title": "ISPORTS",
+    "image": "assets/page-19.webp",
+    "thumbnail": "assets/thumb-19.webp",
+    "width": 2700,
+    "height": 3600
+  },
+  {
+    "number": "20",
+    "title": "ISPORTS ",
+    "image": "assets/page-20.webp",
+    "thumbnail": "assets/thumb-20.webp",
+    "width": 2700,
+    "height": 3600
+  }
+]
