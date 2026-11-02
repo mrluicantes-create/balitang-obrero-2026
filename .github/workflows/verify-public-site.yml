@@ -66,7 +66,7 @@ jobs:
            await page.screenshot({path:'work/center-reader.png'});
            const width=await page.locator('#book').evaluate(e=>e.clientWidth);await page.locator('#zoomIn').click();assert.ok(await page.locator('#book').evaluate(e=>e.clientWidth)>width);
            await page.locator('#zoomReset').click();
-           await page.locator('#fullscreen').click();assert.ok(await page.evaluate(()=>!!document.fullscreenElement));await page.locator('#fullscreen').click();
+           await page.locator('#fullscreen').click();await page.waitForFunction(()=>!!document.fullscreenElement);await page.locator('#fullscreen').click();await page.waitForFunction(()=>!document.fullscreenElement);
            await page.locator('#contentsButton').click();assert.ok(await page.locator('#contents').isVisible());assert.equal(await page.locator('#pageGrid button').count(),19);
            await page.locator('#pageGrid button[data-page="20"]').click();assert.ok(await page.locator('#next').isDisabled());
            await page.locator('#pageSelect').selectOption('1');assert.ok(await page.locator('#prev').isDisabled());
