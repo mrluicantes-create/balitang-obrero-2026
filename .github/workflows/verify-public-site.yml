@@ -1,0 +1,95 @@
+name: Verify public flipbook
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify every public website file
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, time, urllib.request
+          base = 'https://mrluicantes-create.github.io/balitang-obrero-2026/'
+          expected = {"assets/page-1.webp":"b1fe32336b1c5e9463595520326c9b2912529614",".nojekyll":"8b137891791fe96927ad78e64b0aad7bded08bdc","assets/page-10-11.webp":"696737edd2d14c906d5395139e9f374a049634e4","assets/page-12.webp":"9a9fe643c5876b87a71a336e8487de9eaabca591","assets/page-13.webp":"3979ee7de1ba99808d1851fd994fea75a9112f09","assets/page-14.webp":"6c0e29b0125fa5bea810584b155ee125c6675210","assets/page-15.webp":"18844ca32b16ac86fa3cfaf05c2463c5deceda57","assets/page-16.webp":"72b94bcb755150ef58813a324b1090df01bbf21b","assets/page-17.webp":"c6d60ae0e551432037f2f45205608a23a3041a53","assets/page-18.webp":"3c25fa4edc453250a922517e160960311dde03aa","assets/page-19.webp":"f5f2f579bbdcb9d1bf7bdc9c00d90d5ad3f27cb9","assets/page-2.webp":"3dbc9a193cd18d0ab0f70bf36bee95f46a2c03a4","assets/page-20.webp":"d2025a591697302b5fb648d06b2dfe431d72b0bf","assets/page-3.webp":"3a38068a32878220609cf815f51c434853c51007","assets/page-4.webp":"e9f804f8c23da3b3cdb40720489607a88f4d821c","assets/page-5.webp":"9eac9b160283800e4c9758a2ab0613da203df183","assets/page-6.webp":"cf4fb369119cf66983066d905c7346d577084767","assets/page-7.webp":"734bfbe382380c7117e75dd91951d9a91fe093b1","assets/page-8.webp":"540fa02c68d7d7e94882887b5570c1dc707d0fd9","assets/page-9.webp":"297871c08a0c3f7a45094b18f6972ce67e41d091","assets/thumb-1.webp":"a2920c8f110287e4dddb560c39e9309806a7db04","assets/thumb-10-11.webp":"6f784250aa62462e4e2245f1d4a99622364fdb43","assets/thumb-12.webp":"11f67dcb6077caf99644e053c482ec0a0c7f176e","assets/thumb-13.webp":"208a61a209d68038d49d3b9149089ca514c39cb9","assets/thumb-14.webp":"2725ba0970ba421d5b560eece2f5ab43124fb63a","assets/thumb-15.webp":"6de9e6fd13bd9174d3e7b2c767c9043f2d356c5a","assets/thumb-16.webp":"afeda9fda91dc0c6b73ee6b1956f716ebe1254b2","assets/thumb-17.webp":"bba1f1454a4d368b2a44ce22aaad932b739342ce","assets/thumb-18.webp":"2370f85e605df8711feb467dde0891b646c94821","assets/thumb-19.webp":"b040b65a18dcf70d7dfc961e76a4b2c922d4f799","assets/thumb-2.webp":"0de91a0e6b3f1ed8c1a9933f271b5c9b85632416","assets/thumb-20.webp":"354649c0d56f992755a2d0bf1aed8281ac90c2d6","assets/thumb-3.webp":"f8c598a1597981d35e69216f7efae9cead1f4585","assets/thumb-4.webp":"ac02251cdf3dccae2a7ac8ab7c8e603efb118bcb","assets/thumb-5.webp":"ddad145f6b1b4daf3541c389ac53e5dc7412617c","assets/thumb-6.webp":"02e6c1fab05560f268753c0281526c131ca4888a","assets/thumb-7.webp":"592af3c0ff4555ba98ef3bed9f79a61ad1a8afae","assets/thumb-8.webp":"616ea249ee4b9e37b271ea5499925e149d957084","assets/thumb-9.webp":"81a26a276251edccc6e30bc4c3cd1d114f5051d4","favicon.svg":"5659dbc7a85287ba418a1ff8095dc6fed9282062","index.html":"c910cd89cf631d5bc157524dedb451729763baca","pages.json":"e4567dc0b8b61fd050dd18eb50ef65fae21b95ef","reader.js":"5a01b9a1fe601ae209664626467b97361432008d","style.css":"0ac6fe2a9d4bb1eab2caf7b592ad3faaeffc3ee7","Balitang-Obrero-2026.pdf":"a68be25fde916b31d9044ca2706cb1d9d955b71c"}
+          for attempt in range(20):
+              try:
+                  with urllib.request.urlopen(base, timeout=30) as response:
+                      assert response.status == 200
+                  break
+              except Exception:
+                  if attempt == 19: raise
+                  time.sleep(10)
+          for path, sha in expected.items():
+              with urllib.request.urlopen(base + path, timeout=60) as response:
+                  assert response.status == 200, path
+                  data = response.read()
+              actual = hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
+              assert actual == sha, path + ': public bytes differ from uploaded source'
+              print('PASS', path, len(data), flush=True)
+          print('All 45 public files verified byte-for-byte, including center spread and PDF.')
+          
+          PY
+      - name: Install browser for reader verification
+        run: |
+          npm install --prefix "$RUNNER_TEMP/bo-qa" playwright@1.62.1 --no-audit --no-fund
+          node "$RUNNER_TEMP/bo-qa/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Verify desktop and mobile reader
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/bo-qa/node_modules/playwright
+        run: |
+          node - https://mrluicantes-create.github.io/balitang-obrero-2026/ <<'JS'
+          const { chromium }=require(process.env.PLAYWRIGHT_PATH);
+          const assert=require('node:assert/strict');
+          const fs=require('node:fs');
+          (async()=>{
+           const browser=await chromium.launch({headless:true});
+           const page=await browser.newPage({viewport:{width:1440,height:1000}});
+           const errors=[];page.on('pageerror',e=>errors.push(e.message));
+           const base=process.argv[2]||'http://127.0.0.1:8765/';
+           fs.mkdirSync('work',{recursive:true}); await page.goto(base);await page.waitForSelector('#book img');
+           await page.waitForFunction(()=>document.querySelector('#book').getAttribute('aria-busy')==='false');
+           assert.equal(await page.locator('#book img').count(),1);
+           await page.screenshot({path:'work/desktop-reader.png'});
+           await page.locator('#next').click();assert.equal(await page.locator('#book img').count(),2);
+           assert.match(await page.locator('#book img').first().getAttribute('alt'),/Page 2/);
+           await page.locator('#centerLink').click();await page.waitForFunction(()=>document.querySelector('#book img').complete);
+           assert.equal(await page.locator('#book img').count(),1);assert.match(await page.locator('#book img').getAttribute('src'),/10-11/);
+           assert.equal(await page.locator('#book').getAttribute('class'),'');
+           const center=await page.locator('#book img').evaluate(im=>({nw:im.naturalWidth,nh:im.naturalHeight,w:im.clientWidth,h:im.clientHeight}));
+           assert.equal(center.nw/center.nh,1.5);assert.ok(Math.abs(center.w/center.h-1.5)<.02);
+           await page.screenshot({path:'work/center-reader.png'});
+           const width=await page.locator('#book').evaluate(e=>e.clientWidth);await page.locator('#zoomIn').click();assert.ok(await page.locator('#book').evaluate(e=>e.clientWidth)>width);
+           await page.locator('#zoomReset').click();
+           await page.locator('#fullscreen').click();assert.ok(await page.evaluate(()=>!!document.fullscreenElement));await page.locator('#fullscreen').click();
+           await page.locator('#contentsButton').click();assert.ok(await page.locator('#contents').isVisible());assert.equal(await page.locator('#pageGrid button').count(),19);
+           await page.locator('#pageGrid button[data-page="20"]').click();assert.ok(await page.locator('#next').isDisabled());
+           await page.locator('#pageSelect').selectOption('1');assert.ok(await page.locator('#prev').isDisabled());
+           for(const n of ['1','2','3','4','5','6','7','8','9','10-11','12','13','14','15','16','17','18','19','20']){
+            await page.locator('#pageSelect').selectOption(n);await page.waitForFunction(()=>[...document.querySelectorAll('#book img')].every(im=>im.complete&&im.naturalWidth>0));
+           }
+           await page.locator('#pageSelect').selectOption('1');await page.locator('#viewport').focus();await page.keyboard.press('ArrowRight');assert.match(await page.locator('#book img').first().getAttribute('alt'),/Page 2/);
+           await page.setViewportSize({width:390,height:844});await page.waitForTimeout(100);assert.equal(await page.locator('#book img').count(),1);
+           await page.locator('#pageSelect').selectOption('10-11');await page.waitForFunction(()=>document.querySelector('#book img').complete);await page.screenshot({path:'work/mobile-center.png'});
+           assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+           const rect=await page.locator('#book img').boundingBox();assert.ok(rect.x>=0&&rect.x+rect.width<=390);
+           await page.locator('#pageSelect').selectOption('1');
+           // Real touch events exercise the reader's swipe handler.
+           const cdp=await page.context().newCDPSession(page);
+           await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:300,y:350}]});
+           await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:110,y:351}]});
+           await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+           assert.match(await page.locator('#book img').getAttribute('alt'),/Page 2/);
+           await page.screenshot({path:'work/mobile-reader.png'});
+           const pdf=await page.request.get(new URL('Balitang-Obrero-2026.pdf',base).href);assert.equal(pdf.status(),200);assert.ok((await pdf.body()).subarray(0,5).toString()==='%PDF-');
+           assert.deepEqual(errors,[]);
+           console.log(JSON.stringify({result:'passed',desktop:'page pairs and all 20 numbers',center:'single uncut 5400 × 3600 image',mobile:'single pages, center spread, swipe, no overflow',controls:'zoom, fullscreen, page picker, thumbnails, keyboard',pdf:'200 OK and valid PDF header'}));
+           await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          
+          JS
